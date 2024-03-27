@@ -1,0 +1,402 @@
+01:05:05.041 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:05:05.041 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:05:05.044 [INFO ] [main] server.Server - Сервер запущен
+01:05:05.044 [INFO ] [main] server.Server - Сервер запущен
+01:05:24.167 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:05:24.167 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:05:27.821 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Socket is closed
+	at java.base/java.net.Socket.getOutputStream(Socket.java:1015)
+	at server.Server.sendResponse(Server.java:40)
+	at server.Server.run(Server.java:65)
+	at Main.main(Main.java:6)
+01:05:27.821 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Socket is closed
+	at java.base/java.net.Socket.getOutputStream(Socket.java:1015)
+	at server.Server.sendResponse(Server.java:40)
+	at server.Server.run(Server.java:65)
+	at Main.main(Main.java:6)
+01:06:40.756 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:06:40.756 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:06:40.758 [INFO ] [main] server.Server - Сервер запущен
+01:06:40.758 [INFO ] [main] server.Server - Сервер запущен
+01:06:47.749 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:06:47.749 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:07:03.056 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Socket is closed
+	at java.base/java.net.Socket.getOutputStream(Socket.java:1015)
+	at server.Server.sendResponse(Server.java:40)
+	at server.Server.run(Server.java:65)
+	at Main.main(Main.java:6)
+01:07:03.056 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Socket is closed
+	at java.base/java.net.Socket.getOutputStream(Socket.java:1015)
+	at server.Server.sendResponse(Server.java:40)
+	at server.Server.run(Server.java:65)
+	at Main.main(Main.java:6)
+01:07:51.680 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:07:51.680 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:07:51.682 [INFO ] [main] server.Server - Сервер запущен
+01:07:51.682 [INFO ] [main] server.Server - Сервер запущен
+01:07:56.136 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:07:56.136 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:08:38.923 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:48)
+	at server.Server.run(Server.java:64)
+	at Main.main(Main.java:6)
+01:08:38.923 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:48)
+	at server.Server.run(Server.java:64)
+	at Main.main(Main.java:6)
+01:08:40.447 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:08:40.447 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:09:45.158 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:09:45.158 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:09:45.160 [INFO ] [main] server.Server - Сервер запущен
+01:09:45.160 [INFO ] [main] server.Server - Сервер запущен
+01:09:52.598 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:09:52.598 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:10:11.802 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:48)
+	at server.Server.run(Server.java:64)
+	at Main.main(Main.java:25)
+01:10:11.802 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:48)
+	at server.Server.run(Server.java:64)
+	at Main.main(Main.java:25)
+01:10:13.325 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:10:13.325 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:11:41.983 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:11:41.983 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:11:41.985 [INFO ] [main] server.Server - Сервер запущен
+01:11:41.985 [INFO ] [main] server.Server - Сервер запущен
+01:11:46.307 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:11:46.307 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:12:06.919 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:48)
+	at server.Server.run(Server.java:64)
+	at Main.main(Main.java:25)
+01:12:06.919 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:48)
+	at server.Server.run(Server.java:64)
+	at Main.main(Main.java:25)
+01:12:23.228 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:12:23.228 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:12:23.230 [INFO ] [main] server.Server - Сервер запущен
+01:12:23.230 [INFO ] [main] server.Server - Сервер запущен
+01:12:25.206 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:12:25.206 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:13:09.742 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:48)
+	at server.Server.run(Server.java:64)
+	at Main.main(Main.java:25)
+01:13:09.742 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:48)
+	at server.Server.run(Server.java:64)
+	at Main.main(Main.java:25)
+01:13:28.744 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:13:28.744 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:13:31.007 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:48)
+	at server.Server.run(Server.java:64)
+	at Main.main(Main.java:25)
+01:13:31.007 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:48)
+	at server.Server.run(Server.java:64)
+	at Main.main(Main.java:25)
+01:14:35.987 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:14:35.987 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:14:41.400 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:48)
+	at server.Server.run(Server.java:64)
+	at Main.main(Main.java:25)
+01:14:41.400 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:48)
+	at server.Server.run(Server.java:64)
+	at Main.main(Main.java:25)
+01:15:02.030 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:15:02.030 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:15:03.460 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:48)
+	at server.Server.run(Server.java:64)
+	at Main.main(Main.java:25)
+01:15:03.460 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:48)
+	at server.Server.run(Server.java:64)
+	at Main.main(Main.java:25)
+01:15:05.842 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:15:05.842 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:15:23.446 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:48)
+	at server.Server.run(Server.java:64)
+	at Main.main(Main.java:25)
+01:15:23.446 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:48)
+	at server.Server.run(Server.java:64)
+	at Main.main(Main.java:25)
+01:19:08.214 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:19:08.214 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:19:13.790 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:48)
+	at server.Server.run(Server.java:64)
+	at Main.main(Main.java:25)
+01:19:13.790 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:48)
+	at server.Server.run(Server.java:64)
+	at Main.main(Main.java:25)
+01:38:20.256 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:38:20.256 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:38:20.262 [INFO ] [main] server.Server - Сервер запущен
+01:38:20.262 [INFO ] [main] server.Server - Сервер запущен
+01:39:16.490 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:39:16.490 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:39:16.496 [INFO ] [main] server.Server - Сервер запущен
+01:39:16.496 [INFO ] [main] server.Server - Сервер запущен
+01:39:30.405 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:39:30.405 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:39:30.410 [INFO ] [main] server.Server - Сервер запущен
+01:39:30.410 [INFO ] [main] server.Server - Сервер запущен
+01:41:20.484 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:41:20.484 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:41:21.050 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:49)
+	at server.Server.run(Server.java:65)
+	at ServerStarter.main(ServerStarter.java:26)
+01:41:21.050 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:49)
+	at server.Server.run(Server.java:65)
+	at ServerStarter.main(ServerStarter.java:26)
+01:43:17.872 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:43:17.872 [INFO ] [main] server.Server - Подключился клиент по адрессу /127.0.0.1
+01:45:25.066 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:49)
+	at server.Server.run(Server.java:65)
+	at ServerStarter.main(ServerStarter.java:26)
+01:45:25.066 [WARN ] [main] server.Server - Соединение разорвано
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:350)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:803)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:982)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.read(ObjectInputStream.java:2894)
+	at java.base/java.io.ObjectInputStream$PeekInputStream.readFully(ObjectInputStream.java:2910)
+	at java.base/java.io.ObjectInputStream$BlockDataInputStream.readShort(ObjectInputStream.java:3407)
+	at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:960)
+	at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:403)
+	at server.Server.receiveRequest(Server.java:49)
+	at server.Server.run(Server.java:65)
+	at ServerStarter.main(ServerStarter.java:26)
+01:48:37.301 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:48:37.301 [INFO ] [main] server.Server - Сервер запущен на порту 5555
+01:48:37.307 [INFO ] [main] server.Server - Сервер запущен
+01:48:37.307 [INFO ] [main] server.Server - Сервер запущен

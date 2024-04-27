@@ -2,20 +2,21 @@ package сommands;
 
 import objectspace.Vehicle;
 import dataexchange.Response;
-import server.database.Storage;
+import server.database.VehicleStorageManager;
+import server.database.UserPermissionException;
 
 /**
  *
  * Реализация команды remove_by_id
  * @author Piromant
  */
-public class RemoveById extends Command implements CommandWithId{
+public class RemoveById extends ElementCommand implements CommandWithId{
     /**
      * id элемента, который будет удален
      */
 
-    public <T extends Vehicle> RemoveById(Storage<T> storage, String argument, T el) {
-        super(storage, argument, el);
+    public <T extends Vehicle> RemoveById(VehicleStorageManager<T> storage, String argument, T el, String userName) {
+        super(storage, argument, el, userName);
     }
 
 
@@ -24,7 +25,12 @@ public class RemoveById extends Command implements CommandWithId{
      */
     @Override
     public Response execute() {
-        boolean res = this.storage.remove(new Vehicle(Integer.parseInt(this.argument)));
+        boolean res = false;
+        try {
+            res = this.storage.remove(new Vehicle(Integer.parseInt(this.argument)), userName);
+        } catch (UserPermissionException e){
+            return new Response("Недостаточно прав для удаления элемента");
+        }
         if(res)
             return new Response("Элемент удален");
         else

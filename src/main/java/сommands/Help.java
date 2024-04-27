@@ -2,7 +2,8 @@ package сommands;
 
 import objectspace.Vehicle;
 import dataexchange.Response;
-import server.database.Storage;
+import server.database.VehicleStorageManager;
+import сommands.authorizationscommands.AuthorizationCommand;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -14,17 +15,17 @@ import java.util.Map;
  * Реализация команды help
  * @author Piromant
  */
-public class Help extends Command{
+public class Help extends ElementCommand{
 
 
     private Map<String, Class<? extends Command>> commandMap;
-    public <T extends Vehicle> Help(Storage<T> storage, String argument, T el, Map<String, Class<? extends Command>> commandMap) {
-        super(storage, argument, el);
+    public <T extends Vehicle> Help(VehicleStorageManager<T> storage, String argument, T el, String userName, Map<String, Class<? extends Command>> commandMap) {
+        super(storage, argument, el, userName);
         this.commandMap = commandMap;
     }
 
-    private <T extends Vehicle> Help(Storage<T> storage, String argument, T el){
-        super(storage, argument, el);
+    private <T extends Vehicle> Help(VehicleStorageManager<T> storage, String argument, T el, String userName){
+        super(storage, argument, el, userName);
     }
     /**
      * Метод, выводящий справку по всем командам
@@ -35,12 +36,14 @@ public class Help extends Command{
         for(String name: this.commandMap.keySet()){
             String description = name;
             Class command = this.commandMap.get(name);
+            if(AuthorizationCommand.class.isAssignableFrom(command))
+                continue;
             if(CommandUsingElement.class.isAssignableFrom(command))
                 description += " {element, ввод элемента осущестлявется в следующих 5 строках} ";
             try {
-                Constructor constructor = command.getDeclaredConstructor(Storage.class, String.class, Vehicle.class);
+                Constructor constructor = command.getDeclaredConstructor(VehicleStorageManager.class, String.class, Vehicle.class, String.class);
                 constructor.setAccessible(true);
-                description += " : " + command.getMethod("getHelp").invoke(constructor.newInstance(storage, argument, el));
+                description += " : " + command.getMethod("getHelp").invoke(constructor.newInstance(storage, argument, el, userName));
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
                 e.printStackTrace();
             }

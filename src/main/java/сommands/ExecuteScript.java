@@ -1,12 +1,14 @@
 package сommands;
 
+import dataexchange.RequestWithPermission;
 import objectspace.Vehicle;
 import objectspace.exceptions.ArgumentVehicleException;
 import objectspace.exceptions.VehicleException;
 import server.CommandExecuter;
 import dataexchange.Request;
 import dataexchange.Response;
-import server.database.Storage;
+import server.app.authorization.UserPermission;
+import server.database.VehicleStorageManager;
 import server.filework.FileInputStreamReader;
 import server.filework.FileReader;
 import server.utilities.Pair;
@@ -21,7 +23,7 @@ import java.util.ListIterator;
  * Реализация команды execute_script
  * @author Piromant
  */
-public class ExecuteScript extends Command{
+public class ExecuteScript extends ElementCommand{
     /**
      * @see CommandExecuter
      */
@@ -32,8 +34,8 @@ public class ExecuteScript extends Command{
     private FileReader fileReader;
 
 
-    public <T extends Vehicle> ExecuteScript(Storage storage, String argument, T el){
-        super(storage, argument, el);
+    public <T extends Vehicle> ExecuteScript(VehicleStorageManager storage, String argument, T el, String userName){
+        super(storage, argument, el, userName);
         this.commandExecuter = CommandExecuter.getAccess();
         this.fileReader = new FileInputStreamReader();
     }
@@ -60,11 +62,11 @@ public class ExecuteScript extends Command{
         try {
             while (it.hasNext()) {
                 Pair<String, ArrayList<String>> command = it.next();
-                Request request = new Request(command.getFirst(), command.getSecond(), false);
+                Request request = new Request(command.getFirst(), command.getSecond(), userName,false);
                 if(command.getFirst().equals("execute_script " + argument))
                     response.add("Скрипт вызывает сам себя. Комманда вызова скрипта в скрипте была пропущена");
                 else
-                    this.commandExecuter.executeCommand(request);
+                    this.commandExecuter.executeCommand(new RequestWithPermission(request, UserPermission.DefaultUser));
                 //this.commandExecuter.executeCommand(command.getFirst(), command.getSecond());
             }
             response.add("Скрипт Выполнен");

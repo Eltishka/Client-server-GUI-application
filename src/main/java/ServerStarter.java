@@ -1,31 +1,37 @@
-import client.Terminal;
+import server.Config;
 import server.Invoker;
-import server.Server;
+import server.app.Server;
 import сommands.*;
+import сommands.authorizationscommands.Login;
+import сommands.authorizationscommands.Register;
+
+import java.io.IOException;
 
 public class ServerStarter {
-    public static void main(String[] args){
-        Invoker invoker = Invoker.getAccess();
-        invoker.register("add", Add.class);
-        invoker.register("add_if_max", AddIfMax.class);
-        invoker.register("add_if_min", AddIfMin.class);
-        invoker.register("clear", Clear.class);
-        //invoker.register("save", Save.class);
-        invoker.register("average_of_engine_power", AverageOfEnginePower.class);
-        invoker.register("execute_script", ExecuteScript.class);
-        invoker.register("exit", Exit.class);
-        invoker.register("filter_contains_name", FilterContainsName.class);
-        invoker.register("help", Help.class);
-        invoker.register("history", History.class);
-        invoker.register("info", Info.class);
-        invoker.register("print_field_descending_engine_power", PrintFieldDescendingEnginePower.class);
-        invoker.register("remove_by_id", RemoveById.class);
-        invoker.register("show", Show.class);
-        invoker.register("update", Update.class);
-        Server server = new Server(5555);
+    public static void main(String[] args) throws IOException {
+
+        Invoker.register("add", Add.class);
+        Invoker.register("add_if_max", AddIfMax.class);
+        Invoker.register("add_if_min", AddIfMin.class);
+        Invoker.register("clear", Clear.class);
+        Invoker.register("average_of_engine_power", AverageOfEnginePower.class);
+        Invoker.register("execute_script", ExecuteScript.class);
+        Invoker.register("exit", Exit.class);
+        Invoker.register("filter_contains_name", FilterContainsName.class);
+        Invoker.register("help", Help.class);
+        Invoker.register("history", History.class);
+        Invoker.register("info", Info.class);
+        Invoker.register("print_field_descending_engine_power", PrintFieldDescendingEnginePower.class);
+        Invoker.register("remove_by_id", RemoveById.class);
+        Invoker.register("show", Show.class);
+        Invoker.register("update", Update.class);
+        Invoker.register("login", Login.class);
+        Invoker.register("register", Register.class);
+        Config.createConfig("C:\\Users\\Piromant\\Desktop\\Програ\\lab6\\src\\main\\resources\\config.txt");
+
+        Server server = new Server(2026);
         server.run();
 
-        Terminal terminal = new Terminal("localhost",  5555);
-        terminal.start();
+
     }
 }

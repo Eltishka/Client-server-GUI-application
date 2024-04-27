@@ -1,25 +1,23 @@
 package сommands;
+import lombok.AllArgsConstructor;
 import objectspace.Vehicle;
 import dataexchange.Response;
-import server.database.Storage;
+import server.database.UserStorageManager;
+import server.database.VehicleStorageManager;
+import server.utilities.Pair;
+
+import java.util.Deque;
+import java.util.Map;
+
 
 /**
  * 
  * Абстрактный класс команды, который реализуют все команды
  * @author Piromant
  */
-public abstract class Command {
+public interface Command {
 
-    protected Storage storage;
-    protected String argument;
-    protected Vehicle el;
+    Response execute();
+    String getHelp();
 
-    public abstract Response execute();
-    public abstract String getHelp();
-
-    public <T extends Vehicle> Command(Storage<T> storage, String argument, T el){
-        this.storage = storage;
-        this.argument = argument;
-        this.el = el;
-    }
 }

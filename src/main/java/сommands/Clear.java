@@ -2,17 +2,17 @@ package сommands;
 
 import objectspace.Vehicle;
 import dataexchange.Response;
-import server.database.Storage;
+import server.database.VehicleStorageManager;
 
 /**
  * Реализация команды clear
  * @author Piromant
  */
-public class Clear extends Command{
+public class Clear extends ElementCommand{
 
 
-    public <T extends Vehicle> Clear(Storage<T> storage, String argument, T el) {
-        super(storage, argument, el);
+    public <T extends Vehicle> Clear(VehicleStorageManager<T> storage, String argument, T el, String owner) {
+        super(storage, argument, el, owner);
     }
 
     /**
@@ -20,7 +20,7 @@ public class Clear extends Command{
      */
     @Override
     public Response execute() {
-        this.storage.clear();
+        this.storage.clear(this.userName);
         return new Response("Коллекция очищена");
     }
 

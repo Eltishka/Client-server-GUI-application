@@ -2,7 +2,7 @@ package сommands;
 
 import objectspace.Vehicle;
 import dataexchange.Response;
-import server.database.Storage;
+import server.database.VehicleStorageManager;
 import server.utilities.Pair;
 
 import java.util.Deque;
@@ -13,19 +13,19 @@ import java.util.stream.Collectors;
  * Реализация команды history
  * @author Piromant
  */
-public class History extends Command{
+public class History extends ElementCommand{
     /**
      * История команд в виде пар (Имя, Объект класса команды)
      */
     private Deque<Pair<String, Command>> history;
 
-    public <T extends Vehicle> History(Storage<T> storage, String argument, T el, Deque<Pair<String, Command>> history) {
-        super(storage, argument, el);
+    public <T extends Vehicle> History(VehicleStorageManager<T> storage, String argument, T el, String userName,Deque<Pair<String, Command>> history) {
+        super(storage, argument, el, userName);
         this.history = history;
     }
 
-    private <T extends Vehicle> History(Storage<T> storage, String argument, T el){
-        super(storage, argument, el);
+    private <T extends Vehicle> History(VehicleStorageManager<T> storage, String argument, T el, String userName){
+        super(storage, argument, el, userName);
     }
     /**
      * Метод, выводящий последние 7 команд

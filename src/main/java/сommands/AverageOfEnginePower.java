@@ -2,17 +2,20 @@ package сommands;
 
 import objectspace.Vehicle;
 import dataexchange.Response;
-import server.database.Storage;
+import server.database.VehicleStorageManager;
+import server.utilities.Pair;
+
+import java.util.Collection;
 
 /**
 
  * Реализация команды average_of_engine_power
  * @author Piromant
  */
-public class AverageOfEnginePower extends Command{
+public class AverageOfEnginePower extends ElementCommand{
 
-    public <T extends Vehicle> AverageOfEnginePower(Storage<T> storage, String argument, T el) {
-        super(storage, argument, el);
+    public <T extends Vehicle> AverageOfEnginePower(VehicleStorageManager<T> storage, String argument, T el, String userName) {
+        super(storage, argument, el, userName);
     }
 
     /**
@@ -20,7 +23,8 @@ public class AverageOfEnginePower extends Command{
      */
     @Override
     public Response execute() {
-        double res = ((Storage<? super Vehicle>)(this.storage)).stream().mapToDouble(Vehicle::getEnginePower).sum();
+        double res = (((Collection<? extends Pair<Vehicle, String>>)(this.storage.getCollection())).stream()
+                .map(Pair::getFirst)).map(Vehicle::new).mapToDouble(Vehicle::getEnginePower).sum();
         if(res > 0)
              res /= this.storage.size();
         return new Response(res);

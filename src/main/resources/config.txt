@@ -1,0 +1,8 @@
+vehiclesDatabasePath=jdbc:postgresql://localhost:5432/VehicleDB
+vehiclesDatabaseUser=s408993
+vehiclesDatabasePassword=IxBf*8022
+userDatabasePath=jdbc:postgresql://localhost:5432/VehicleDB
+userDatabaseUser=s408993
+userDatabasePassword=IxBf*8022
+userDatabaseName=Users
+vehiclesDatabaseName=Vehicles

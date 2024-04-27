@@ -2,17 +2,17 @@ package сommands;
 
 import objectspace.Vehicle;
 import dataexchange.Response;
-import server.database.Storage;
+import server.database.VehicleStorageManager;
 
 /**
  * 
  * Реализация команды show
  * @author Piromant
  */
-public class Show extends Command{
+public class Show extends ElementCommand{
 
-    public <T extends Vehicle> Show(Storage<T> storage, String argument, T el) {
-        super(storage, argument, el);
+    public <T extends Vehicle> Show(VehicleStorageManager<T> storage, String argument, T el, String userName) {
+        super(storage, argument, el, userName);
     }
 
 
@@ -22,7 +22,7 @@ public class Show extends Command{
     @Override
     public Response execute() {
         if(storage.size() > 0)
-            return new Response(storage.stream().sorted().toArray());
+            return new Response(storage.getCollection().stream().sorted().toArray());
         else
             return new Response("В коллекции нет элементов");
     }

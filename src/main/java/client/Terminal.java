@@ -1,5 +1,7 @@
 package client;
 
+import dataexchange.Response;
+import hashing.Hasher;
 import objectspace.FuelType;
 import objectspace.VehicleType;
 import objectspace.exceptions.VehicleException;
@@ -8,6 +10,8 @@ import dataexchange.Request;
 import сommands.CommandUsingElement;
 import сommands.CommandWithId;
 
+import java.io.IOException;
+import java.net.SocketException;
 import java.util.*;
 /**
  *
@@ -19,7 +23,7 @@ public class Terminal implements Runnable{
      * Сканер для считывания введенных данных
      */
     private Scanner sc;
-
+    private String userName;
     private Client client;
 
     private CommandHashMap commandMap;
@@ -28,6 +32,7 @@ public class Terminal implements Runnable{
      */
     public Terminal(String server_address, int server_port){
         this.sc = new Scanner(System.in);
+        System.out.println(server_address);
         this.client = new Client(server_address, server_port);
 
 
@@ -106,6 +111,7 @@ public class Terminal implements Runnable{
     /**
      * Основной метод для работы с пользователем и чтения введенных команд
      */
+
     public void run() {
         String command = "";
         while(!command.equals("exit")) {
@@ -121,8 +127,8 @@ public class Terminal implements Runnable{
                 }
                 if (this.checkIfNeedElement(commandToCheck[0]))
                     element = this.readElement();
-                Request request = new Request(command, element, true);
-                this.client.sendRequest(request);
+                Request request = new Request(command, element, userName, true);
+                this.sendRequestSafety(request);
             }
             catch (VehicleException e) {
                 System.out.println(e.getMessage() + " " + e.getCause().getMessage());
@@ -130,10 +136,10 @@ public class Terminal implements Runnable{
             catch (NoSuchElementException e){
                 sc.close();
                 System.out.println("Программа завершена");
-                Request request = new Request("exit", element, true);
-                this.client.sendRequest(request);
+                Request request = new Request("exit", element, userName, true);
+                this.sendRequestSafety(request);
             }
-            System.out.println(this.client.receiveResponse());
+            System.out.println(this.receiveResponseSafety());
         }
     }
 
@@ -142,10 +148,92 @@ public class Terminal implements Runnable{
      * Метод запуска
      */
     public void start(){
-        this.commandMap = (CommandHashMap) this.client.start().getResponse()[0];
-        System.out.println("Здравсвтуйте, для получения справки по командам введите help");
+
+        try {
+            this.commandMap = (CommandHashMap) this.client.start().getResponse()[0];
+        } catch (ClassNotFoundException e) {
+            System.out.println("Сервер передает не определенный объект. Скорее всего версии серврера и клиента отличаются");;
+            System.exit(0);
+        }
+        this.auth();
+        System.out.println("Здравсвтуйте " + userName + ", для получения справки по командам введите help");
         run();
     }
 
 
+    private void auth(){
+        Response response = new Response();
+        while (true) {
+
+            System.out.println("Необходима авторизация: авторизуйтесь при помощи команды login");
+            System.out.println("Или зарегистрируйтесь при помощи команды register");
+            String commandName = sc.nextLine();
+            if(commandName.equals("login")){
+                System.out.print("Введите логин: ");
+                String userName = sc.nextLine();
+                System.out.print("Введите пароль: ");
+                String password = Hasher.hashPasswordWith512(sc.nextLine());
+                Request request = new Request("login" + " " + password, new ArrayList<>(), userName, true);
+                this.sendRequestSafety(request);
+                response = this.receiveResponseSafety();
+
+
+                if(Boolean.parseBoolean((String)response.getResponse()[0])){
+                    this.userName = userName;
+                    break;
+                }
+
+            }
+            else if(commandName.equals("register")){
+                System.out.print("Введите логин: ");
+                String userName = sc.nextLine();
+                System.out.print("Введите пароль: ");
+                String password = Hasher.hashPasswordWith512(sc.nextLine());
+                Request request = new Request("register" + " " + password, new ArrayList<>(), userName, true);
+                this.sendRequestSafety(request);
+                response = this.receiveResponseSafety();
+                if(Boolean.parseBoolean((String)response.getResponse()[0])) {
+                    this.userName = userName;
+                    break;
+                }
+
+            }
+            System.out.println(response);
+        }
+    }
+
+    private void sendRequestSafety(Request request){
+        try {
+            this.client.sendRequest(request);
+        }
+        catch (SocketException e){
+            System.out.println("Ошибка: разорвано подключение с сервером");
+            System.out.println("Попытка переподключения...");
+            this.start();
+            this.sendRequestSafety(request);
+        } catch (IOException e) {
+            System.out.println("Не удается отправить запрос серверу, проверьте адрес и порт...");
+        }
+    }
+
+    private Response receiveResponseSafety(){
+        Response response = new Response();
+        try{
+            response = this.client.receiveResponse();
+        }
+        catch (SocketException e){
+            System.out.println("Ошибка: разорвано подключение с сервером");
+            System.out.println("Попытка переподключения...");
+            this.start();
+            System.out.println("Переподключение выполнено. Пожалуйста, повторите ввод:");
+        } catch (IOException e) {
+            System.out.println("Не удается получить ответ сервера...");
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Сервер передает не определенный объект. Скорее всего версии серврера и клиента отличаются");;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
 }

@@ -2,16 +2,16 @@ package сommands;
 
 import objectspace.Vehicle;
 import dataexchange.Response;
-import server.database.Storage;
+import server.database.VehicleStorageManager;
 
 /**
  * 
  * Реализация команды exit
  * @author Piromant
  */
-public class Exit extends Command{
-    public <T extends Vehicle> Exit(Storage<T> storage, String argument, T el) {
-        super(storage, argument, el);
+public class Exit extends ElementCommand{
+    public <T extends Vehicle> Exit(VehicleStorageManager<T> storage, String argument, T el, String userName) {
+        super(storage, argument, el, userName);
     }
 
     /**
@@ -19,7 +19,6 @@ public class Exit extends Command{
      */
     @Override
     public Response execute() {
-        (new Save(storage, argument, el)).execute();
         return new Response("До свидания!");
     }
 

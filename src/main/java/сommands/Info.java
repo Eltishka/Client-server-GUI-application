@@ -24,8 +24,8 @@ public class Info extends ElementCommand{
     @Override
     public Response execute() {
         List<String> response = new LinkedList<>();
-        response.add("Тип коллекции " + storage.getClass());
-        response.add("Количество элементов " + storage.size());
+        response.add(storage.getClass().toString());
+        response.add(String.valueOf(storage.size()));
         return new Response(response.toArray());
     }
 

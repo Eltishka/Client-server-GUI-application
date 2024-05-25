@@ -20,6 +20,7 @@ public class ResponseManager implements Runnable{
         while(true){
             ResponseWithReceiver responseWithReceiver = responseQueue.poll();
             if(responseWithReceiver != null){
+
                 responseSendPool.execute(new ResponseSender(responseWithReceiver.receiver, responseWithReceiver.response));
             }
         }

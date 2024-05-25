@@ -22,7 +22,9 @@ public class Login extends AuthorizationCommand{
         if (authorized)
             return new Response("true");
 
-        return new Response("Неверное имя пользователя или пароль");
+        Response response =  new Response("Неверное имя пользователя или пароль");
+        response.setResponseCode(6);
+        return response;
 
     }
 

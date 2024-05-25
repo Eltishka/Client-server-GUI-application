@@ -24,6 +24,11 @@ public class VehicleOwnerPair<X extends Vehicle, Y> extends Pair<X, Y> implement
     }
 
     @Override
+    public int hashCode(){
+        return getFirst().hashCode();
+    }
+
+    @Override
     public String toString(){
         return this.getFirst() + ", Владелец: " + this.getSecond();
     }

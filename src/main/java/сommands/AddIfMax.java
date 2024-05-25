@@ -27,8 +27,11 @@ public class AddIfMax extends ElementCommand implements CommandUsingElement{
         TreeSet<VehicleOwnerPair> sortedCollection = new TreeSet<>(storage.getCollection());
         if(this.storage.size() == 0 || sortedCollection.last().compareTo(el) < 0)
             return (new Add(this.storage, this.argument, this.el, this.userName)).execute();
-        else
-            return new Response("Элемент не был добавлен");
+        else {
+            Response response = new Response(2, "Элемент не был добавлен");
+            response.setResponseCode(2);
+            return response;
+        }
     }
 
     @Override

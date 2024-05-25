@@ -19,7 +19,7 @@ public class Client {
         this.server_address = server_address;
         this.server_port = server_port;
     }
-    public Response start() throws ClassNotFoundException {
+    public Response start() throws ClassNotFoundException, ConnectException {
         try {
             this.socketChannel = SocketChannel.open();
             this.socketChannel.connect(new InetSocketAddress(server_address, server_port));
@@ -30,7 +30,7 @@ public class Client {
             return receiveResponse();
         } catch (ConnectException e){
             System.out.println("Ошибка подключения: Сервер недоступен");
-            System.exit(0);
+            throw e;
         } catch (IOException e) {
             e.printStackTrace();
         }

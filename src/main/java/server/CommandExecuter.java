@@ -4,6 +4,7 @@ import dataexchange.Request;
 import dataexchange.RequestWithPermission;
 import dataexchange.Response;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import objectspace.Vehicle;
 import org.slf4j.LoggerFactory;
 import server.database.DatabaseStorageManager;
@@ -17,6 +18,7 @@ import сommands.Command;
 import сommands.ExecuteScript;
 import сommands.UnknownCommand;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.LinkedList;
 /**
@@ -47,6 +49,7 @@ public class CommandExecuter {
     /**
      * Статический метод, предоставляющий доступ к экземпляру класса исполнителя комманд
      */
+    @SneakyThrows
     @Deprecated
     public static CommandExecuter getAccess() {
         if(commandExecuter == null)
@@ -59,6 +62,7 @@ public class CommandExecuter {
      * @see FileInputStreamReader
 
      */
+    @SneakyThrows
     public CommandExecuter() {
         this.invoker = Invoker.getAccess();
         this.history = new LinkedList<>();
@@ -73,6 +77,7 @@ public class CommandExecuter {
 
         } catch (SQLException e) {
             logger.error("Ошибка при работе с базой данных", e);
+            throw e;
         }
 
 
@@ -80,7 +85,7 @@ public class CommandExecuter {
     }
 
 
-    public synchronized Response executeCommand(RequestWithPermission permitRequest) {
+    public Response executeCommand(RequestWithPermission permitRequest) {
 
         Request request = permitRequest.request;
         String command_name = request.command_name;
@@ -102,7 +107,6 @@ public class CommandExecuter {
             this.executedRecursionScript.clear();
         }
         response = commandToExecute.execute();
-
         if(!(commandToExecute instanceof UnknownCommand))
             this.writeCommandToHistory(new Pair<>(command_name, commandToExecute));
 

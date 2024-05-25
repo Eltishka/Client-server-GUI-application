@@ -21,7 +21,9 @@ public class Clear extends ElementCommand{
     @Override
     public Response execute() {
         this.storage.clear(this.userName);
-        return new Response("Коллекция очищена");
+        Response response = new Response(3, "Коллекция очищена");
+        response.setResponseCode(3);
+        return response;
     }
 
     @Override

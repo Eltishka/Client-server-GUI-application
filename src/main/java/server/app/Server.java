@@ -45,7 +45,7 @@ public class Server {
     }
 
 
-    @SneakyThrows
+
     public void run(){
         logger.info("Сервер запущен");
         try {

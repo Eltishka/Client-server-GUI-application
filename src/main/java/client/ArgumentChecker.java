@@ -5,6 +5,6 @@ package client;
  * @author Piromant
  */
 @FunctionalInterface
-public interface ArgumentChecker<String> {
+public interface ArgumentChecker {
     public boolean check(String arg);
 }

@@ -1,5 +1,6 @@
 package server;
 
+import lombok.SneakyThrows;
 import objectspace.Vehicle;
 import org.slf4j.LoggerFactory;
 import server.app.authorization.UserPermission;
@@ -9,6 +10,7 @@ import сommands.*;
 import сommands.authorizationscommands.AuthorizationCommand;
 
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Deque;
 
 public class Invoker {
@@ -39,8 +41,9 @@ public class Invoker {
 
     }
 
+    @SneakyThrows
     public <T extends Vehicle> Command getCommandToExecute(String commandName, VehicleStorageManager<Vehicle> storage, UserStorageManager userStorageManager,
-                                                           String argument, Vehicle el, String userName, Deque history, UserPermission permission) {
+                                                           String argument, Vehicle el, String userName, Deque history, UserPermission permission){
         Command instance = new UnknownCommand(storage, argument, el, commandName, userName);
         if(this.commandMap.containsKey(commandName)) {
             try {
@@ -60,6 +63,7 @@ public class Invoker {
                 }
             } catch (Exception e){
                 logger.error("Ошибка при создании экземпляра команды", e);
+                throw e;
             }
 
         }

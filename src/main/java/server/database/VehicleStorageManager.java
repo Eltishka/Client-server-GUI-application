@@ -4,6 +4,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import objectspace.Vehicle;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashSet;

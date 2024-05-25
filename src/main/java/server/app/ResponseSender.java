@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class ResponseSender implements Runnable{
@@ -20,18 +21,21 @@ public class ResponseSender implements Runnable{
     public ResponseSender(Socket client, Response response){
         this.client = client;
         this.response = response;
+
     }
     @SneakyThrows
     public void run() {
         try {
             BufferedOutputStream writer = new BufferedOutputStream(client.getOutputStream());
             ObjectOutputStream outputStream = new ObjectOutputStream(writer);
+
             outputStream.writeObject(response);
             outputStream.flush();
         } catch (IOException e) {
             logger.error("Ошибка ввода/вывода", e);
             if(!this.client.isClosed())
                 this.client.close();
+            throw e;
         }
     }
 }

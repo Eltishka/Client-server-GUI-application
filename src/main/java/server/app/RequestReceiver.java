@@ -9,6 +9,7 @@ import server.app.authorization.AuthorizedClient;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.SocketException;
+import java.sql.SQLException;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class RequestReceiver implements Runnable{
@@ -30,12 +31,14 @@ public class RequestReceiver implements Runnable{
             } catch (ClassNotFoundException e) {
                 logger.error("Не сущетсвующий класс был передан клиентом", e);
                 this.client.getSocket().close();
+                throw new ClassNotFoundException("Не сущетсвующий класс был передан клиентом");
             } catch(SocketException e){
                 logger.info("Клиент откючился", this.client.getSocket().getInetAddress());
+                throw new SocketException("Клиент откючился");
             } catch(IOException e) {
                 logger.error("Ошибка ввода/вывода", e);
                 this.client.getSocket().close();
-
+                throw new IOException("Ошибка ввода/вывода", e);
             }
         }
     }

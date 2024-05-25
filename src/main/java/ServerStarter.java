@@ -6,6 +6,7 @@ import сommands.authorizationscommands.Login;
 import сommands.authorizationscommands.Register;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 public class ServerStarter {
     public static void main(String[] args) throws IOException {
@@ -27,9 +28,12 @@ public class ServerStarter {
         Invoker.register("update", Update.class);
         Invoker.register("login", Login.class);
         Invoker.register("register", Register.class);
-        Config.createConfig("C:\\Users\\Piromant\\Desktop\\Програ\\lab6\\src\\main\\resources\\config.txt");
+        Scanner sc = new Scanner(System.in);
+        //System.out.println("Введите абсолютный путь до конфига: ");
+        String path = "C:\\Users\\Piromant\\Desktop\\Програ\\lab6\\src\\main\\resources\\config.txt";
+        Config.createConfig(path);
 
-        Server server = new Server(2026);
+        Server server = new Server(2027);
         server.run();
 
 

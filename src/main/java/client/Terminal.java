@@ -11,6 +11,9 @@ import сommands.CommandUsingElement;
 import сommands.CommandWithId;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.ConnectException;
 import java.net.SocketException;
 import java.util.*;
 /**
@@ -24,7 +27,9 @@ public class Terminal implements Runnable{
      */
     private Scanner sc;
     private String userName;
-    private Client client;
+    public Client client;
+    private SaffetyClientBridge bridge;
+    private ClientAuthorizer authorizer;
 
     private CommandHashMap commandMap;
     /**
@@ -34,9 +39,10 @@ public class Terminal implements Runnable{
         this.sc = new Scanner(System.in);
         System.out.println(server_address);
         this.client = new Client(server_address, server_port);
-
-
+        this.bridge = new SafetyClientBridgeImpl(this, client);
+        this.authorizer = new ClientAuthorizerImpl(sc, bridge);
     }
+
 
     public boolean checkIfNeedElement(String commandName){
         return CommandUsingElement.class.isAssignableFrom(this.commandMap.get(commandName));
@@ -53,7 +59,7 @@ public class Terminal implements Runnable{
      * @see ArgumentChecker
      * @return Строка - валидный аргумент
      */
-    private String getArgumentWithRules(String msg, ArgumentChecker<String> checker){
+    private String getArgumentWithRules(String msg, ArgumentChecker checker){
         String arg = "";
         System.out.println(msg);
         arg = this.sc.nextLine();
@@ -76,7 +82,7 @@ public class Terminal implements Runnable{
                                             arg -> !arg.matches("\\s*")));
 
         args.add(getArgumentWithRules("Введите координаты в формате: x y (x - число с дробной частью типа double, оба больше нуля, y - целое формата long)",
-                                            arg -> ArgumentValidator.checkCoordinates(arg)));
+                ArgumentValidator::checkCoordinates));
 
         args.add(getArgumentWithRules("Введите силу двигателя (неотрицательное целое число больше нуля и мень 2^63):",
                                             arg -> ArgumentValidator.checkEnginePower(arg)));
@@ -128,7 +134,7 @@ public class Terminal implements Runnable{
                 if (this.checkIfNeedElement(commandToCheck[0]))
                     element = this.readElement();
                 Request request = new Request(command, element, userName, true);
-                this.sendRequestSafety(request);
+                this.bridge.sendRequestSafety(request);
             }
             catch (VehicleException e) {
                 System.out.println(e.getMessage() + " " + e.getCause().getMessage());
@@ -137,9 +143,9 @@ public class Terminal implements Runnable{
                 sc.close();
                 System.out.println("Программа завершена");
                 Request request = new Request("exit", element, userName, true);
-                this.sendRequestSafety(request);
+                this.bridge.sendRequestSafety(request);
             }
-            System.out.println(this.receiveResponseSafety());
+            System.out.println(this.bridge.receiveResponseSafety());
         }
     }
 
@@ -151,89 +157,16 @@ public class Terminal implements Runnable{
 
         try {
             this.commandMap = (CommandHashMap) this.client.start().getResponse()[0];
+            this.userName = this.authorizer.auth();
+            System.out.println("Здравсвтуйте " + userName + ", для получения справки по командам введите help");
+            //run();
         } catch (ClassNotFoundException e) {
             System.out.println("Сервер передает не определенный объект. Скорее всего версии серврера и клиента отличаются");;
-            System.exit(0);
+        } catch (ConnectException e) {
+            //throw new RuntimeException(e);
         }
-        this.auth();
-        System.out.println("Здравсвтуйте " + userName + ", для получения справки по командам введите help");
-        run();
+
     }
 
 
-    private void auth(){
-        Response response = new Response();
-        while (true) {
-
-            System.out.println("Необходима авторизация: авторизуйтесь при помощи команды login");
-            System.out.println("Или зарегистрируйтесь при помощи команды register");
-            String commandName = sc.nextLine();
-            if(commandName.equals("login")){
-                System.out.print("Введите логин: ");
-                String userName = sc.nextLine();
-                System.out.print("Введите пароль: ");
-                String password = Hasher.hashPasswordWith512(sc.nextLine());
-                Request request = new Request("login" + " " + password, new ArrayList<>(), userName, true);
-                this.sendRequestSafety(request);
-                response = this.receiveResponseSafety();
-
-
-                if(Boolean.parseBoolean((String)response.getResponse()[0])){
-                    this.userName = userName;
-                    break;
-                }
-
-            }
-            else if(commandName.equals("register")){
-                System.out.print("Введите логин: ");
-                String userName = sc.nextLine();
-                System.out.print("Введите пароль: ");
-                String password = Hasher.hashPasswordWith512(sc.nextLine());
-                Request request = new Request("register" + " " + password, new ArrayList<>(), userName, true);
-                this.sendRequestSafety(request);
-                response = this.receiveResponseSafety();
-                if(Boolean.parseBoolean((String)response.getResponse()[0])) {
-                    this.userName = userName;
-                    break;
-                }
-
-            }
-            System.out.println(response);
-        }
-    }
-
-    private void sendRequestSafety(Request request){
-        try {
-            this.client.sendRequest(request);
-        }
-        catch (SocketException e){
-            System.out.println("Ошибка: разорвано подключение с сервером");
-            System.out.println("Попытка переподключения...");
-            this.start();
-            this.sendRequestSafety(request);
-        } catch (IOException e) {
-            System.out.println("Не удается отправить запрос серверу, проверьте адрес и порт...");
-        }
-    }
-
-    private Response receiveResponseSafety(){
-        Response response = new Response();
-        try{
-            response = this.client.receiveResponse();
-        }
-        catch (SocketException e){
-            System.out.println("Ошибка: разорвано подключение с сервером");
-            System.out.println("Попытка переподключения...");
-            this.start();
-            System.out.println("Переподключение выполнено. Пожалуйста, повторите ввод:");
-        } catch (IOException e) {
-            System.out.println("Не удается получить ответ сервера...");
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            System.out.println("Сервер передает не определенный объект. Скорее всего версии серврера и клиента отличаются");;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return response;
-    }
 }

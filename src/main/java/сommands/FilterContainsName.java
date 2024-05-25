@@ -33,7 +33,8 @@ public class FilterContainsName extends ElementCommand{
                 .filter(el -> el.getFirst().getName().contains(this.argument)).
                 collect(Collectors.toList());
         if(res.size() == 0){
-            return new Response("Совпадений не обнаружено");
+            Response response = new Response("Совпадений не обнаружено");
+            response.setResponseCode(4);
         }
         return new Response(res.toArray());
     }

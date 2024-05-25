@@ -25,14 +25,17 @@ public class RemoveById extends ElementCommand implements CommandWithId{
      */
     @Override
     public Response execute() {
-        boolean res = false;
+        boolean res;
         try {
             res = this.storage.remove(new Vehicle(Integer.parseInt(this.argument)), userName);
         } catch (UserPermissionException e){
             return new Response("Недостаточно прав для удаления элемента");
         }
-        if(res)
-            return new Response("Элемент удален");
+        if(res) {
+            Response response = new Response("Элемент удален");
+            response.setResponseCode(9);
+            return response;
+        }
         else
             return new Response("Элемента с таким id в коллекции нет");
     }

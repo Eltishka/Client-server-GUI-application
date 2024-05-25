@@ -2,6 +2,7 @@ package dataexchange;
 
 import objectspace.Vehicle;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -16,6 +17,8 @@ public class Request implements Serializable {
     public final String userName;
     public final boolean sentFromClient;
 
+    @Serial
+    public final static long serialVersionUID = 2311231232134421989L;
 
     public Request(String command, ArrayList<String> element, String userName, boolean sentFromClient) {
         String[] commandParts = command.split(" ");
@@ -31,7 +34,6 @@ public class Request implements Serializable {
             this.argument = commandParts[1];
         else
             this.argument = "";
-
         this.sentFromClient = sentFromClient;
         this.userName = userName;
     }

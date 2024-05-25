@@ -17,7 +17,7 @@ public class Update extends ElementCommand implements CommandUsingElement, Comma
     }
 
     /**
-     * Метод, обнавляющий элемент в коллекции по его id и выводящий результат
+     * Метод, обновляющий элемент в коллекции по его id и выводящий результат
      */
     @Override
     public Response execute() {
@@ -25,12 +25,16 @@ public class Update extends ElementCommand implements CommandUsingElement, Comma
 
         try {
             if(this.storage.update(el, userName)) {
-                return new Response("Элемент обновлен");
+                Response response = new Response("Элемент обновлен");
+                response.setResponseCode(5);
+                return response;
             } else {
                 return new Response("Элемента с таким id в коллекции нет");
             }
         } catch (UserPermissionException e) {
-            return new Response("Недостаточно прав для изменения элемента");
+            Response response =  new Response("Недостаточно прав для изменения элемента");
+            response.setResponseCode(10);
+            return response;
         }
     }
 

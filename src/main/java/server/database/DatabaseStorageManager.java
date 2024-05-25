@@ -1,6 +1,7 @@
 package server.database;
 
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import objectspace.Coordinates;
 import objectspace.FuelType;
 import objectspace.Vehicle;
@@ -30,7 +31,8 @@ public class DatabaseStorageManager implements VehicleStorageManager{
         this.loadCollection();
     }
 
-    private void loadCollection() throws SQLException {
+    @SneakyThrows
+    private void loadCollection() {
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM " + tableName + ";");
         ResultSet resultSet = statement.executeQuery();
         this.storage.clear();
@@ -54,14 +56,17 @@ public class DatabaseStorageManager implements VehicleStorageManager{
     }
 
     @Override
-    public synchronized boolean add(Vehicle el, String owner) {
+    @SneakyThrows
+    public boolean add(Vehicle el, String owner) {
         try {
-            PreparedStatement statement = this.connection.prepareStatement("INSERT INTO " + tableName + " (name, coord_x, coord_y, creation_date, engine_power, vehicle_type, fuel_type, owner) values (?, ?, ?, ?, ?, ?, ?, ?);");
-            fillStatementWithEl(el, owner, statement);
-            statement.executeUpdate();
-
-            statement = this.connection.prepareStatement("SELECT * FROM " + tableName + " ORDER BY id DESC LIMIT 1");
-            ResultSet resultSet = statement.executeQuery();
+            ResultSet resultSet;
+            synchronized (this.connection) {
+                PreparedStatement statement = this.connection.prepareStatement("INSERT INTO " + tableName + " (name, coord_x, coord_y, creation_date, engine_power, vehicle_type, fuel_type, owner) values (?, ?, ?, ?, ?, ?, ?, ?);");
+                fillStatementWithEl(el, owner, statement);
+                statement.executeUpdate();
+                statement = this.connection.prepareStatement("SELECT * FROM " + tableName + " ORDER BY id DESC LIMIT 1");
+                resultSet = statement.executeQuery();
+            }
             Integer id;
             if (resultSet.next())
                 id = resultSet.getInt("id");
@@ -72,9 +77,9 @@ public class DatabaseStorageManager implements VehicleStorageManager{
 
         } catch (SQLException e) {
             logger.error("Ошибка при работе с базой данных", e);
+            throw e;
         }
 
-        return false;
     }
 
     private void fillStatementWithEl(Vehicle el, String owner, PreparedStatement statement) throws SQLException {
@@ -88,72 +93,96 @@ public class DatabaseStorageManager implements VehicleStorageManager{
         statement.setString(8, owner);
     }
 
+
+    @SneakyThrows
     private boolean checkPermission(int id, @NonNull String userName){
+        ResultSet resultSet;
         if(userName.equals("admin"))
             return true;
         try {
-            PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM " + tableName + " WHERE id = ? AND user_name = ?");
-            ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next())
-                return resultSet.getString("owner") == userName;
+            synchronized (this.connection) {
+                PreparedStatement statement = this.connection.prepareStatement("SELECT * FROM " + tableName + " WHERE id = ? AND owner = ?");
+                statement.setInt(1, id);
+                statement.setString(2, userName);
+                resultSet = statement.executeQuery();
+            }
+            if (resultSet.next())
+                return Objects.equals(resultSet.getString("owner"), userName);
         } catch (SQLException e) {
             logger.error("Ошибка при работе с базой данных", e);
+            throw e;
         }
         return false;
     }
 
     @Override
-    public synchronized boolean update(Vehicle el, String userName) throws UserPermissionException {
+    @SneakyThrows
+    public boolean update(Vehicle el, String userName) throws UserPermissionException {
         try {
-            if(!checkPermission(el.getId(), userName))
-                throw new UserPermissionException();
-            PreparedStatement statement = this.connection.prepareStatement(
-                    "UPDATE Vehicles SET name = ?, coord_x = ?, coord_y = ?, creation_date = ?, engine_power = ?, vehicle_type = ?, fuel_type = ? WHERE id = ?"
-            );
-            fillStatementWithEl(el, userName, statement);
-            statement.setInt(8, el.getId());
-            if(statement.executeUpdate() > 0){
+            
+            int updateCount = 0;
+            synchronized (this.connection) {
+                if (!checkPermission(el.getId(), userName))
+                    throw new UserPermissionException();
+                PreparedStatement statement = this.connection.prepareStatement(
+                        "UPDATE Vehicles SET name = ?, coord_x = ?, coord_y = ?, creation_date = ?, engine_power = ?, vehicle_type = ?, fuel_type = ? WHERE id = ?"
+                );
+                fillStatementWithEl(el, userName, statement);
+                statement.setInt(8, el.getId());
+                updateCount = statement.executeUpdate();
+            }
+            if (updateCount > 0) {
                 this.storage.remove(new VehicleOwnerPair<>(el, userName));
                 return this.storage.add(new VehicleOwnerPair<>(el, userName));
             }
 
-
         } catch (SQLException e) {
             logger.error("Ошибка при работе с базой данных", e);
+            throw e;
 
         }
         return false;
     }
 
     @Override
-    public synchronized boolean remove(@NonNull Vehicle el, @NonNull String userName) throws UserPermissionException {
+    public boolean remove(@NonNull Vehicle el, @NonNull String userName) throws UserPermissionException {
         try {
+            int updateCount = 0;
             if(!checkPermission(el.getId(), userName))
                 throw new UserPermissionException();
-            PreparedStatement statement = this.connection.prepareStatement("DELETE FROM " + tableName + " WHERE id = ?;");
-            statement.setInt(1, el.getId());
-            if(statement.executeUpdate() > 0)
-                return this.storage.remove(el);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            synchronized (this.connection) {
+                PreparedStatement statement = this.connection.prepareStatement("DELETE FROM " + tableName + " WHERE id = ?;");
+                statement.setInt(1, el.getId());
+                updateCount = statement.executeUpdate();
+            }
+            if (updateCount > 0) {
+                return this.storage.remove(new VehicleOwnerPair<Vehicle, String>(el, userName));
+            }
+        } catch (SQLException e) {
+            logger.error("Ошибка при работе с базой данных", e);
+            throw new RuntimeException(e);
         }
         return false;
     }
 
     @Override
-    public synchronized Collection getCollection() {
+    public Collection getCollection() {
         return new LinkedHashSet<Pair<Vehicle, String>>(this.storage);
     }
 
     @Override
+    @SneakyThrows
     public void clear(@NonNull String userName) {
         try {
-            PreparedStatement statement = this.connection.prepareStatement("DELETE FROM " + tableName + " WHERE owner = ?;");
-            statement.setString(1, userName);
-            statement.executeUpdate();
+            synchronized (this.connection) {
+                PreparedStatement statement = this.connection.prepareStatement("DELETE FROM " + tableName + " WHERE owner = ?;");
+                statement.setString(1, userName);
+                statement.executeUpdate();
+            }
             this.loadCollection();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            logger.error("Ошибка при работе с базой данных", e);
+            throw e;
         }
     }
 

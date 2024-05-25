@@ -37,6 +37,7 @@ public class ExecuteScript extends ElementCommand{
     public <T extends Vehicle> ExecuteScript(VehicleStorageManager storage, String argument, T el, String userName){
         super(storage, argument, el, userName);
         this.commandExecuter = CommandExecuter.getAccess();
+        this.commandExecuter.setUserName(userName);
         this.fileReader = new FileInputStreamReader();
     }
     /**

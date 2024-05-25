@@ -21,10 +21,16 @@ public class Add extends ElementCommand implements CommandUsingElement{
      */
     @Override
     public Response execute() {
-        if(this.storage.add(el, userName))
-            return new Response("Элемент добавлен");
-        else
-            return new Response("Элемент не был добавлен");
+        if(this.storage.add(el, userName)) {
+            Response response = new Response("Элемент добавлен");
+            response.setResponseCode(1);
+            return response;
+        }
+        else {
+            Response response = new Response("Элемент не был добавлен");
+            response.setResponseCode(2);
+            return response;
+        }
     }
 
     @Override

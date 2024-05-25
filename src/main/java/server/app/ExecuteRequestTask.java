@@ -21,6 +21,6 @@ public class ExecuteRequestTask extends RecursiveAction {
         AuthorizedClient client = requestWithSender.sender;
         RequestWithPermission requestWithPermission = new RequestWithPermission(request, UserPermission.DefaultUser);
         Response response = client.getCommandExecuter().executeCommand(requestWithPermission);
-        responseQueue.add(new ResponseWithReceiver(client.getSocket(), response.getResponse()));
+        responseQueue.add(new ResponseWithReceiver(client.getSocket(), response));
     }
 }

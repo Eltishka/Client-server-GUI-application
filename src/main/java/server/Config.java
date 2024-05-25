@@ -43,7 +43,7 @@ public class Config {
         properties = new Properties();
         properties.load(new FileReader(propertiesPath));
     }
-    public static Config getConfig() {
+    public synchronized static Config getConfig() {
         return new Config();
     }
 }

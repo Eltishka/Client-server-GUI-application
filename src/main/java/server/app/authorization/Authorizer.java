@@ -49,28 +49,24 @@ public class Authorizer implements Runnable{
                 this.commandExecuter.setUserName(request.userName);
                 RequestWithPermission requestWithPermission = new RequestWithPermission(request, UserPermission.System);
                 response = this.commandExecuter.executeCommand(requestWithPermission);
-                if(Boolean.parseBoolean((String) response.getResponse()[0])){
+                new ResponseSender(client, response).run();
+                if(Boolean.parseBoolean(response.getResponse()[0].toString())){
                     userName = request.userName;
-                    authorized = true;
                     break;
                 }
-                new ResponseSender(client, response).run();
             } catch (ClassNotFoundException e) {
                 logger.error("Не сущетсвующий класс был передан клиентом", e);
                 this.client.close();
-                break;
+                throw e;
             } catch (IOException e) {
                 logger.error("Ошибка ввода/вывода", e);
                 this.client.close();
-                break;
+                throw e;
             }
         }
 
-        if(authorized){
-            new ResponseSender(client, response).run();
-            AuthorizedClient authorizedClient = new AuthorizedClient(client, commandExecuter, userName);
-            this.requestReceivePool.execute(new RequestReceiver(authorizedClient, this.requestQueue));
+        AuthorizedClient authorizedClient = new AuthorizedClient(client, commandExecuter, userName);
+        this.requestReceivePool.execute(new RequestReceiver(authorizedClient, this.requestQueue));
 
-        }
     }
 }

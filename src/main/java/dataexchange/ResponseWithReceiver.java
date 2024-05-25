@@ -6,7 +6,7 @@ public class ResponseWithReceiver{
     public final Socket receiver;
     public final Response response;
 
-    public ResponseWithReceiver(Socket receiver, Object... response){
+    public ResponseWithReceiver(Socket receiver, Response response){
         this.response = new Response(response);
         this.receiver = receiver;
     }

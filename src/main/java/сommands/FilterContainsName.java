@@ -2,22 +2,25 @@ package сommands;
 
 import objectspace.Vehicle;
 import dataexchange.Response;
-import server.database.Storage;
+import server.database.VehicleStorageManager;
+import server.utilities.Pair;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 /**
  * 
  * Реализация команды filter_contains_name
  * @author Piromant
  */
-public class FilterContainsName extends Command{
+public class FilterContainsName extends ElementCommand{
     /**
-     * @see Storage
+     * @see VehicleStorageManager
      */
-    private Storage<? extends Vehicle> storage;
 
-    public <T extends Vehicle> FilterContainsName(Storage<T> storage, String argument, T el) {
-        super(storage, argument, el);
+    public <T extends Vehicle> FilterContainsName(VehicleStorageManager<T> storage, String argument, T el, String userName) {
+        super(storage, argument, el, userName);
     }
 
     /**
@@ -25,10 +28,13 @@ public class FilterContainsName extends Command{
      */
     @Override
     public Response execute() {
-        Storage<? extends Vehicle> res = this.storage.stream().filter(el -> el.getName()
-                .contains(this.argument)).collect(Collectors.toCollection(Storage::new));
+        List<? extends Pair<Vehicle, String>> res = ((Collection<? extends Pair<Vehicle, String>>)this.storage.getCollection())
+                .stream()
+                .filter(el -> el.getFirst().getName().contains(this.argument)).
+                collect(Collectors.toList());
         if(res.size() == 0){
-            return new Response("Совпадений не обнаружено");
+            Response response = new Response("Совпадений не обнаружено");
+            response.setResponseCode(4);
         }
         return new Response(res.toArray());
     }

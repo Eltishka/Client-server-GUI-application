@@ -2,22 +2,22 @@ package сommands;
 
 import objectspace.Vehicle;
 import dataexchange.Response;
-import server.database.Storage;
+import server.database.VehicleStorageManager;
 
 /**
  * 
  * Реализация "неизветсной" команды, то есть той, которой нет в списке команд
  * @author Piromant
  */
-public class UnknownCommand extends Command {
+public class UnknownCommand extends ElementCommand {
 
     /**
      * Имя несуществующей команды
      */
     private String command;
 
-    public <T extends Vehicle> UnknownCommand(Storage<T> storage, String argument, T el, String command) {
-        super(storage, argument, el);
+    public <T extends Vehicle> UnknownCommand(VehicleStorageManager<T> storage, String argument, T el, String command, String userName) {
+        super(storage, argument, el, userName);
         this.command = command;
     }
 

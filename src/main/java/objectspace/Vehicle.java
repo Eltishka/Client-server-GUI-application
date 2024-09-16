@@ -3,16 +3,13 @@ package objectspace;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import lombok.*;
 import objectspace.exceptions.*;
-import server.utilities.IDGenerator;
+
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 
-/**
- * Класс средства передвижения, объекты которого являются элементами коллекции Storage
- * @see server.database.Storage
- */
+
 
 @Getter
 @Setter
@@ -47,7 +44,7 @@ public class Vehicle implements Comparable<Vehicle>, Serializable {
 
 
     public Vehicle(@NonNull String name, @NonNull Coordinates coordinates, @NonNull Long enginePower, @NonNull VehicleType type, @NonNull FuelType fuelType) throws VehicleException {
-        this.id = IDGenerator.generateID();
+        this.id = null;
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = new Date();
@@ -63,6 +60,16 @@ public class Vehicle implements Comparable<Vehicle>, Serializable {
 
     public Vehicle(int id){
         this.id = id;
+    }
+
+    public Vehicle(Vehicle v) {
+        this.id = v.getId();
+        this.name = v.getName();
+        this.coordinates = v.coordinates;
+        this.creationDate = v.getCreationDate();
+        this.enginePower = v.getEnginePower();
+        this.type = v.getType();
+        this.fuelType = v.getFuelType();
     }
 
     @Override

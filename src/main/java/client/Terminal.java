@@ -1,5 +1,7 @@
 package client;
 
+import dataexchange.Response;
+import hashing.Hasher;
 import objectspace.FuelType;
 import objectspace.VehicleType;
 import objectspace.exceptions.VehicleException;
@@ -8,6 +10,11 @@ import dataexchange.Request;
 import сommands.CommandUsingElement;
 import сommands.CommandWithId;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.ConnectException;
+import java.net.SocketException;
 import java.util.*;
 /**
  *
@@ -19,8 +26,10 @@ public class Terminal implements Runnable{
      * Сканер для считывания введенных данных
      */
     private Scanner sc;
-
-    private Client client;
+    private String userName;
+    public Client client;
+    private SaffetyClientBridge bridge;
+    private ClientAuthorizer authorizer;
 
     private CommandHashMap commandMap;
     /**
@@ -28,10 +37,12 @@ public class Terminal implements Runnable{
      */
     public Terminal(String server_address, int server_port){
         this.sc = new Scanner(System.in);
+        System.out.println(server_address);
         this.client = new Client(server_address, server_port);
-
-
+        this.bridge = new SafetyClientBridgeImpl(this, client);
+        this.authorizer = new ClientAuthorizerImpl(sc, bridge);
     }
+
 
     public boolean checkIfNeedElement(String commandName){
         return CommandUsingElement.class.isAssignableFrom(this.commandMap.get(commandName));
@@ -48,7 +59,7 @@ public class Terminal implements Runnable{
      * @see ArgumentChecker
      * @return Строка - валидный аргумент
      */
-    private String getArgumentWithRules(String msg, ArgumentChecker<String> checker){
+    private String getArgumentWithRules(String msg, ArgumentChecker checker){
         String arg = "";
         System.out.println(msg);
         arg = this.sc.nextLine();
@@ -71,7 +82,7 @@ public class Terminal implements Runnable{
                                             arg -> !arg.matches("\\s*")));
 
         args.add(getArgumentWithRules("Введите координаты в формате: x y (x - число с дробной частью типа double, оба больше нуля, y - целое формата long)",
-                                            arg -> ArgumentValidator.checkCoordinates(arg)));
+                ArgumentValidator::checkCoordinates));
 
         args.add(getArgumentWithRules("Введите силу двигателя (неотрицательное целое число больше нуля и мень 2^63):",
                                             arg -> ArgumentValidator.checkEnginePower(arg)));
@@ -106,6 +117,7 @@ public class Terminal implements Runnable{
     /**
      * Основной метод для работы с пользователем и чтения введенных команд
      */
+
     public void run() {
         String command = "";
         while(!command.equals("exit")) {
@@ -121,8 +133,8 @@ public class Terminal implements Runnable{
                 }
                 if (this.checkIfNeedElement(commandToCheck[0]))
                     element = this.readElement();
-                Request request = new Request(command, element, true);
-                this.client.sendRequest(request);
+                Request request = new Request(command, element, userName, true);
+                this.bridge.sendRequestSafety(request);
             }
             catch (VehicleException e) {
                 System.out.println(e.getMessage() + " " + e.getCause().getMessage());
@@ -130,10 +142,10 @@ public class Terminal implements Runnable{
             catch (NoSuchElementException e){
                 sc.close();
                 System.out.println("Программа завершена");
-                Request request = new Request("exit", element, true);
-                this.client.sendRequest(request);
+                Request request = new Request("exit", element, userName, true);
+                this.bridge.sendRequestSafety(request);
             }
-            System.out.println(this.client.receiveResponse());
+            System.out.println(this.bridge.receiveResponseSafety());
         }
     }
 
@@ -142,9 +154,18 @@ public class Terminal implements Runnable{
      * Метод запуска
      */
     public void start(){
-        this.commandMap = (CommandHashMap) this.client.start().getResponse()[0];
-        System.out.println("Здравсвтуйте, для получения справки по командам введите help");
-        run();
+
+        try {
+            this.commandMap = (CommandHashMap) this.client.start().getResponse()[0];
+            this.userName = this.authorizer.auth();
+            System.out.println("Здравсвтуйте " + userName + ", для получения справки по командам введите help");
+            //run();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Сервер передает не определенный объект. Скорее всего версии серврера и клиента отличаются");;
+        } catch (ConnectException e) {
+            //throw new RuntimeException(e);
+        }
+
     }
 
 

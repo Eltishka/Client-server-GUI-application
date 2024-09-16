@@ -1,10 +1,13 @@
 package server.utilities;
+
+import java.io.Serializable;
+
 /**
  * 
  * Утилитарный класс для хранения двух элементов
  * @author Piromant
  */
-public class Pair<X, Y> {
+public class Pair<X, Y> implements Serializable {
     private X first;
     private Y second;
     public Pair(X first, Y second){
@@ -27,4 +30,5 @@ public class Pair<X, Y> {
     public Y getSecond() {
         return second;
     }
+
 }

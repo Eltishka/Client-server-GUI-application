@@ -1,5 +1,9 @@
 package client;
 
+import objectspace.Vehicle;
+
+import java.util.ArrayList;
+
 public class ArgumentValidator {
     public static boolean checkId(String[] commandToCheck){
         if(commandToCheck.length == 1){
@@ -19,6 +23,10 @@ public class ArgumentValidator {
         return true;
     }
 
+    public static boolean checkName(String arg){
+        return !arg.matches("\\s*");
+    }
+
     public static boolean checkCoordinates(String arg){
         try {
             Double x = Double.parseDouble(arg.split(" ")[0]);
@@ -31,6 +39,24 @@ public class ArgumentValidator {
         }
     }
 
+    public static boolean checkCoordX(String arg){
+        try {
+            Double x = Double.parseDouble(arg);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
+
+    public static boolean checkCoordY(String arg){
+        try {
+            Long.parseLong(arg);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
+
     public static boolean checkEnginePower(String arg){
         try {
             Long power = Long.parseLong(arg);
@@ -38,6 +64,16 @@ public class ArgumentValidator {
                 throw new Exception();
             return true;
         } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static boolean checkFullObject(ArrayList<String> arg){
+        System.out.println(arg);
+        try {
+            Vehicle.parseVehicle(arg.toArray(String[]::new));
+            return true;
+        } catch (Exception e){
             return false;
         }
     }

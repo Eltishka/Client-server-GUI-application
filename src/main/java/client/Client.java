@@ -19,7 +19,7 @@ public class Client {
         this.server_address = server_address;
         this.server_port = server_port;
     }
-    public Response start(){
+    public Response start() throws ClassNotFoundException, ConnectException {
         try {
             this.socketChannel = SocketChannel.open();
             this.socketChannel.connect(new InetSocketAddress(server_address, server_port));
@@ -30,7 +30,7 @@ public class Client {
             return receiveResponse();
         } catch (ConnectException e){
             System.out.println("Ошибка подключения: Сервер недоступен");
-            System.exit(0);
+            throw e;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -38,7 +38,7 @@ public class Client {
         return null;
     }
 
-    public void sendRequest(Request request) {
+    public void sendRequest(Request request) throws IOException{
         try(ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(120000);
             ObjectOutputStream outputStream = new ObjectOutputStream(byteArrayOutputStream)) {
 
@@ -51,44 +51,22 @@ public class Client {
                 this.socketChannel.write(buffer);
             }
 
-        } catch (SocketException e){
-            System.out.println("Ошибка: разорвано подключение с сервером");
-            System.out.println("Попытка переподключения...");
-
-            this.start();
-            this.sendRequest(request);
-        } catch (IOException e) {
-            System.out.println("Не удается отправить запрос серверу, проверьте адрес и порт...");
         }
     }
 
-    public Response receiveResponse(){
+    public Response receiveResponse() throws IOException, ClassNotFoundException{
         Response response = new Response();
-        try {
-            ByteBuffer buffer = ByteBuffer.allocate(10486);
-            while (this.socketChannel.read(buffer) == 0){}
-            buffer.flip();
-            byte[] data = new byte[buffer.remaining()];
-            buffer.get(data);
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
-            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-            response = (Response)objectInputStream.readObject();
-            objectInputStream.close();
-            byteArrayInputStream.close();
-            buffer.clear();
-        } catch (SocketException e){
-            System.out.println("Ошибка: разорвано подключение с сервером");
-            System.out.println("Попытка переподключения...");
-            this.start();
-            System.out.println("Переподключение выполнено. Пожалуйста, повторите ввод:");
-        } catch (IOException e) {
-            System.out.println("Не удается получить ответ сервера...");
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            System.out.println("Сервер передает не определенный объект. Скорее всего версии серврера и клиента отличаются");;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ByteBuffer buffer = ByteBuffer.allocate(10486);
+        while (this.socketChannel.read(buffer) == 0){}
+        buffer.flip();
+        byte[] data = new byte[buffer.remaining()];
+        buffer.get(data);
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
+        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+        response = (Response)objectInputStream.readObject();
+        objectInputStream.close();
+        byteArrayInputStream.close();
+        buffer.clear();
         return response;
     }
 }

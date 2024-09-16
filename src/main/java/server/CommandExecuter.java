@@ -1,21 +1,25 @@
 package server;
 
 import dataexchange.Request;
+import dataexchange.RequestWithPermission;
 import dataexchange.Response;
+import lombok.Setter;
+import lombok.SneakyThrows;
 import objectspace.Vehicle;
-import server.database.Storage;
+import org.slf4j.LoggerFactory;
+import server.database.DatabaseStorageManager;
+import server.database.UserStorageManager;
+import server.database.UserStorageManagerImpl;
+import server.database.VehicleStorageManager;
 import server.filework.*;
-import server.utilities.InfoSender;
 import server.utilities.OutStreamInfoSender;
 import server.utilities.Pair;
 import сommands.Command;
 import сommands.ExecuteScript;
-import сommands.Save;
 import сommands.UnknownCommand;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.ParseException;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 import java.util.LinkedList;
 /**
  * Класс - исполнитель комманд
@@ -23,80 +27,74 @@ import java.util.LinkedList;
  */
 public class CommandExecuter {
 
-    private static CommandExecuter server;
+    private static CommandExecuter commandExecuter;
     /** Коллекция объектов типа Vehicle
      * @see Vehicle
      */
-    private Storage<Vehicle> storage;
-
+    private VehicleStorageManager<Vehicle> storage;
+    private UserStorageManager userStorageManager;
     /** Список команд, элементы которого пары вида (Название команды, Объект класса команды)
      * @see Pair
      */
+    private static final ch.qos.logback.classic.Logger logger =
+            (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(CommandExecuter.class);
     private LinkedList<Pair<String, Command>> history;
     private Invoker invoker;
     /** @see FileReader */
-    private FileReader fileReader;
-    /** @see InfoSender */
-    private InfoSender infoSender;
-    /** @see FileSaver */
-    private FileSaver fileSaver;
+
+    @Setter
+    private String userName;
 
     private LinkedList<String> executedRecursionScript = new LinkedList<>();
     /**
      * Статический метод, предоставляющий доступ к экземпляру класса исполнителя комманд
      */
-    public static CommandExecuter getAccess(){
-        if(server == null)
-            server = new CommandExecuter();
-        return server;
+    @SneakyThrows
+    @Deprecated
+    public static CommandExecuter getAccess() {
+        if(commandExecuter == null)
+            commandExecuter = new CommandExecuter();
+        return commandExecuter;
     }
 
     /** Конструктор класса, задающий все параметры и загрудающий коллекцию из файла
      * @see OutStreamInfoSender
      * @see FileInputStreamReader
-     * @see XMLSaver
-     * @see XMLLoader
+
      */
-    private CommandExecuter()  {
+    @SneakyThrows
+    public CommandExecuter() {
         this.invoker = Invoker.getAccess();
         this.history = new LinkedList<>();
-        this.infoSender = new OutStreamInfoSender();
-        this.fileReader = new FileInputStreamReader();
-        this.fileSaver = new XMLSaver();
+
         try {
-            this.storage = (new XMLLoader(fileReader, System.getenv("SAVEFILE"))).loadStorage();
-        } catch (IOException | ParseException e){
-            File file = new File(System.getenv("SAVEFILE"));
-            if(!file.exists())
-                this.infoSender.sendLine("Невозможно загрузить коллекцию из файла. Файл не существует");
-            else if(!file.canRead())
-                this.infoSender.sendLine("Невозможно загрузить коллекцию из файла. Не хватает прав на чтение файла");
-            else
-                this.infoSender.sendLine("Невозможно загрузить коллекцию из файла. Ошибка в xml-тэгах");
-            this.storage = new Storage<>();
-        } catch(NullPointerException e){
-            this.infoSender.sendLine("Невозможно загрузить коллекцию из файла. Переменная SAVEFILE не определена");
-        } catch (Exception e){
-            this.infoSender.sendLine("Невозможно заргузить коллекцию. Ошибка в файле");
-            this.storage = new Storage<>();
+            Config config = Config.getConfig();
+            this.storage = DatabaseStorageManager.getAccess(config.getVehiclesDatabasePath(), config.getVehiclesDatabaseUser(),
+                                                      config.getVehiclesDatabasePassword(), config.getVehiclesDatabaseName());
+            this.userStorageManager = new UserStorageManagerImpl(config.getUserDatabasePath(), config.getUserDatabaseUser(),
+                                                                 config.getUserDatabasePassword(), config.getUserDatabaseName());
+
+
+        } catch (SQLException e) {
+            logger.error("Ошибка при работе с базой данных", e);
+            throw e;
         }
+
 
 
     }
 
-    /**
-     * Метод, который выбирает команду по ее названию, исполняет ее и записывает в историю команд.
-     * Также здесь происходит парсинг объекта типа Vehicle из строк
-     * @param request запрос
-     */
-    public Response executeCommand(Request request/*String command, ArrayList<String> element*/) {
 
+    public Response executeCommand(RequestWithPermission permitRequest) {
+
+        Request request = permitRequest.request;
         String command_name = request.command_name;
         String argument = request.argument;
         Vehicle v = request.element;
-        Response response = new Response();
+        Response response;
 
-        Command commandToExecute = this.invoker.getCommandToExecute(command_name, this.storage, argument, v, this.history);
+        Command commandToExecute = this.invoker.getCommandToExecute(command_name, this.storage, this.userStorageManager, argument, v,
+                                   this.userName, this.history, permitRequest.permission);
         if(!request.sentFromClient) {
             if (commandToExecute instanceof ExecuteScript) {
                 if (executedRecursionScript.contains(argument)) {
@@ -109,7 +107,6 @@ public class CommandExecuter {
             this.executedRecursionScript.clear();
         }
         response = commandToExecute.execute();
-
         if(!(commandToExecute instanceof UnknownCommand))
             this.writeCommandToHistory(new Pair<>(command_name, commandToExecute));
 
@@ -126,8 +123,5 @@ public class CommandExecuter {
         this.history.add(command);
     }
 
-    public void externalSave(){
-        (new Save(this.storage, "", null)).execute();
-    }
 
 }
